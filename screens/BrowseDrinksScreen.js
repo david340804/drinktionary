@@ -31,7 +31,7 @@ export default class BrowseDrinkScreen extends React.Component {
           }
         })
         .then((responseJson) => {
-          console.log(responseJson);
+          //console.log(responseJson);
           try{
             //this.addBalanceData(responseJson.result);
           }catch(e){

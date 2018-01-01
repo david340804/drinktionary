@@ -62,7 +62,7 @@ class DrinkListItem extends React.PureComponent {
       <TouchableOpacity
       onPress={this._onPress}
       onLongPress={this._onLongPress}>
-        <View style={styles.cardItem}>
+        <View style={{height: 20}}>
           <Text style={styles.homeAddressItemHeading}>{this.props.item.name + ' : ' + this.props.item.cryptocurrency}</Text>
           {this.props.item.cryptocurrency == 'ETH' ? <Text style={styles.homeAddressItemText}>{this.props.balance ? 'Wallet Balance: ' + wei2Rounded(this.props.balance,4) : '...'}</Text> : null}
           <Text style={styles.homeAddressItemText}>{this.props.item.address}</Text>
