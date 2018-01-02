@@ -1,4 +1,4 @@
-import { React } from 'react';
+import React from 'react';
 import autobind from 'autobind-decorator'
 import {
   Image,
@@ -9,14 +9,16 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  FlatList,
 } from 'react-native';
+import Colors from '../constants/Colors';
 
 export class DrinkList extends React.PureComponent {
   state = {
     
   };
 
-  _keyExtractor = (item, index) => item.address;
+  _keyExtractor = (item, index) => item.idDrink;
 
   _onPressItem = (pair) => {
     this.props.onPressItem(pair);
@@ -27,10 +29,9 @@ export class DrinkList extends React.PureComponent {
   };
 
   _renderItem = ({item}) => (
-    <AddressListItem
+    <DrinkListItem
       props={item}
       item={item}
-      balance={item.balance}
       onPressItem={this._onPressItem}
       onLongPressItem={this._onLongPressItem}
     />
@@ -62,10 +63,10 @@ class DrinkListItem extends React.PureComponent {
       <TouchableOpacity
       onPress={this._onPress}
       onLongPress={this._onLongPress}>
-        <View style={{height: 20}}>
-          <Text style={styles.homeAddressItemHeading}>{this.props.item.name + ' : ' + this.props.item.cryptocurrency}</Text>
-          {this.props.item.cryptocurrency == 'ETH' ? <Text style={styles.homeAddressItemText}>{this.props.balance ? 'Wallet Balance: ' + wei2Rounded(this.props.balance,4) : '...'}</Text> : null}
-          <Text style={styles.homeAddressItemText}>{this.props.item.address}</Text>
+        <View style={{backgroundColor: 'white', height: 40, padding: 10, borderRadius: 5, margin: 10}}>
+          <Text style={{fontFamily: 'System'}}>
+            {this.props.item.strDrink}
+          </Text>
         </View>
       </TouchableOpacity>
     )

@@ -1,6 +1,18 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import autobind from 'autobind-decorator'
+import autobind from 'autobind-decorator';
+import { DrinkList, DrinkListItem } from '../components/DrinkList';
+import {
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  TextInput,
+  FlatList,
+} from 'react-native';
+import Colors from '../constants/Colors';
 
 export default class BrowseDrinkScreen extends React.Component {
   static navigationOptions = {
@@ -31,9 +43,9 @@ export default class BrowseDrinkScreen extends React.Component {
           }
         })
         .then((responseJson) => {
-          //console.log(responseJson);
+          console.log(responseJson);
           try{
-            //this.addBalanceData(responseJson.result);
+            this.addDrinkData(responseJson.drinks);
           }catch(e){
             console.log(e);
           }
@@ -48,16 +60,18 @@ export default class BrowseDrinkScreen extends React.Component {
     }
   }
 
-  addDrinkData(){
-
+  addDrinkData(_data){
+    this.setState({
+      drinks: _data,
+    });
   }
 
   render() {
     return (
-      <ScrollView style={styles.container}>
-        {/* Go ahead and delete ExpoLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */}
-      </ScrollView>
+      <View style={styles.container}>
+        <DrinkList
+          data={this.state.drinks}/>
+      </View>
     );
   }
 }
@@ -66,6 +80,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.background,
   },
 });
