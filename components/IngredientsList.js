@@ -54,8 +54,8 @@ class IngredientsListItem extends React.PureComponent {
     return (
       <TouchableOpacity
       onPress={this._onPress}>
-        <View style={{ backgroundColor: 'white', margin: 10, padding: 10, textAlign: 'center',}}>
-          <Text>{this.props.ingredientName}</Text>
+        <View style={{ backgroundColor: 'white', marginTop: 5, marginBottom: 5, marginLeft: 10, marginRight: 10, padding: 10,}}>
+          <Text style={{fontFamily: 'System', fontSize: 20}}>{this.props.ingredientName}</Text>
         </View>
       </TouchableOpacity>
     )
