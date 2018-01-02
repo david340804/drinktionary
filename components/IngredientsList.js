@@ -13,14 +13,11 @@ import {
 } from 'react-native';
 
 export class IngredientsList extends React.PureComponent {
-  state = {
-    
-  };
 
   _keyExtractor = (item, index) => index;
 
-  _onPressItem = (pair) => {
-    this.props.onPressItem(pair);
+  _onPressItem = (_ingredientName) => {
+    this.props.onPressItem(_ingredientName);
   };
 
   _renderItem = ({item}) => (
@@ -28,15 +25,18 @@ export class IngredientsList extends React.PureComponent {
       props={item}
       ingredientName={item}
       onPressItem={this._onPressItem}
+      itemViewStyle={this.props.itemViewStyle}
+      itemTextStyle={this.props.itemTextStyle}
+      itemIcon={this.props.itemIcon}
     />
   );
 
   render() {
-    console.log(this.props.data);
+    //console.log(this.props.data);
     return (
       <FlatList
         data={this.props.data}
-        extraData={this.state}
+        extraData={this.props.extraData}
         keyExtractor={this._keyExtractor}
         renderItem={this._renderItem}
       />
@@ -46,16 +46,15 @@ export class IngredientsList extends React.PureComponent {
 
 class IngredientsListItem extends React.PureComponent {
   _onPress = () => {
-    this.props.onPressItem(this.props.item);
+    this.props.onPressItem(this.props.ingredientName);
   };
 
   render() {
-    console.log(this.props.ingredientName)
     return (
       <TouchableOpacity
       onPress={this._onPress}>
-        <View style={{ backgroundColor: 'white', marginTop: 5, marginBottom: 5, marginLeft: 10, marginRight: 10, padding: 10,}}>
-          <Text style={{fontFamily: 'System', fontSize: 20}}>{this.props.ingredientName}</Text>
+        <View style={this.props.itemViewStyle}>
+          <Text style={this.props.itemTextStyle}>{this.props.ingredientName}</Text>
         </View>
       </TouchableOpacity>
     )

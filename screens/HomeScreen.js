@@ -25,8 +25,10 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ingredients: [],
-      results: '',
+      allIngredients: [],
+      results: [],
+      selectedIngredients: [],
+      refresh: false,
     }
   }
 
@@ -74,7 +76,7 @@ export default class HomeScreen extends React.Component {
       }
     );
     this.setState({
-      ingredients: _ingredients,
+      allIngredients: _ingredients,
     });
   }
   
@@ -83,12 +85,61 @@ export default class HomeScreen extends React.Component {
     this.setState({ results });
   }
 
+  @autobind
+  addIngredientToSearch(_ingredient){
+    var _newSelected = [];
+
+    //if this ingredient is already added to the search, skip adding it again
+    if(this.state.selectedIngredients.indexOf(_ingredient) != -1){
+      return;
+    }
+
+    console.log('adding to selected: ')
+    console.log(_ingredient);
+
+    //determine the new search terms
+    if(this.state.selectedIngredients.length > 0){
+      //appent to the old array if it exists
+      _newSelected = this.state.selectedIngredients.concat([_ingredient]);
+    }else{
+      //create the array for the first search term
+      _newSelected = [_ingredient];
+    }
+
+    console.log(_newSelected);
+    
+    this.setState({
+      selectedIngredients: _newSelected,
+    },() => {
+    });
+  }
+
+  @autobind
+  removeIngredientFromSearch(_ingredient){
+    _s = this.state.selectedIngredients;
+
+    //remove all the entries of _ingredient from the search terms array
+    for (var i=_s.length-1; i>=0; i--) {
+      if (_s[i] === _ingredient) {
+          _s.splice(i, 1);
+      }
+    }
+
+    this.setState({
+      selectedIngredients: _s,
+      refresh: !this.state.refresh,
+    },() => {
+      console.log(this.state.selectedIngredients);
+    });
+    
+  }
+
   render() {
     return (
-      <View style={styles.searchBar}>
+      <View style={styles.searchBar,{flex: 1,}}>
         <SearchBar
           ref={(ref) => this.searchBar = ref}
-          data={this.state.ingredients}
+          data={this.state.allIngredients}
           handleResults={this._handleResults}
           showOnLoad={true}
           backCloseSize={0}
@@ -96,9 +147,22 @@ export default class HomeScreen extends React.Component {
           placeholder={'Search for Ingredients'}
           heightAdjust={0}
         />
-        <View style={{height: 300, marginTop: 70}}>
+        <View style={{flex: 1, marginTop: 70}}>
           <IngredientsList
-            data={this.state.results}/>
+            data={this.state.selectedIngredients}
+            extraData={this.state.refresh}
+            onPressItem={this.removeIngredientFromSearch}
+            itemViewStyle={styles.selectedIngredientsView}
+            itemTextStyle={styles.selectedIngredientsText}
+            itemIcon={' '}
+          />
+          <IngredientsList
+            data={this.state.results}
+            onPressItem={this.addIngredientToSearch}
+            itemViewStyle={styles.ingredientsView}
+            itemTextStyle={styles.ingredientsText}
+            itemIcon={' '}
+          />
         </View>
         
       </View>
@@ -126,5 +190,29 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
-  
+  selectedIngredientsView: {
+    backgroundColor: 'black',
+    marginTop: 0,
+    marginBottom: 0,
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
+  },
+  selectedIngredientsText: {
+    fontFamily: 'System',
+    fontSize: 20,
+    color: 'white',
+  },
+  ingredientsView: {
+    backgroundColor: 'white',
+    marginTop: 5 ,
+    marginBottom: 5,
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
+  },
+  ingredientsText: {
+    fontFamily: 'System',
+    fontSize: 20
+  },
 });
